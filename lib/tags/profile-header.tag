@@ -25,7 +25,7 @@
         <p class="note">{profile.about}</p>
     </div>
     <ul if={loaded && profile}>
-        <li class={opts.active == 'activity' ? 'graphjs-active' : ''}>
+        <li if={!opts.simple} class={opts.active == 'activity' ? 'graphjs-active' : ''}>
             <a data-link="activity" onclick={opts.callback}>
                 <span>{language.activity}</span>
                 <svg viewBox="0 0 76 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -49,7 +49,7 @@
                 </svg>
             </a>
         </li>
-        <li class={opts.active == 'groups' ? 'graphjs-active' : ''}>
+        <li if={!opts.simple} class={opts.active == 'groups' ? 'graphjs-active' : ''}>
             <a class={profile.membership_count > 1 ? 'graphjs-count' : ''} data-link="groups" data-count={profile.membership_count || ''} onclick={opts.callback}>
                 <span>{language.groups}</span>
                 <svg viewBox="0 0 134 82" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
