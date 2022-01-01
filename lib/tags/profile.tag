@@ -11,7 +11,6 @@
         box={opts.box}
         callback={changeProperties}
         default-avatar={opts.defaultAvatar ? opts.defaultAvatar : window.GraphJSConfig.defaultAvatar}
-        simple={opts.simple}
     />
     <graphjs-profile-activity
         id={id}
@@ -66,7 +65,8 @@
 
         analytics("profile");
 
-        this.active = opts.default || (opts.simple ? 'followers' : 'activity');
+        this.simpleProfile = window.GraphJSConfig['simpleProfile'] ? window.GraphJSConfig['simpleProfile'] : false;
+        this.active = opts.default || (this.simpleProfile ? 'followers' : 'activity');
         let self = this;
         if(opts.id) {
             this.id = opts.id;
