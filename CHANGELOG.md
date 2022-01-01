@@ -93,3 +93,9 @@ bugfix with auth-login after login (delay in state change, taken into account)
 # 3.5
 bugfix forum title
 forum-list to handle login
+
+# 3.6
+see below ⬇️
+
+# 3.7
+simpleProfile setting added to GraphJS.init
