@@ -99,3 +99,6 @@ see below ⬇️
 
 # 3.7
 simpleProfile setting added to GraphJS.init
+
+# 3.8
+minor bugfix
