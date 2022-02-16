@@ -119,6 +119,7 @@
             this.handleButton();
         }
         this.handleUploadSuccess = uploads => {
+            console.log(uploads);
             // Only 1 video is accepted
             this.refs.addVideo.classList.add('disabled');
             // Multiple photos/documents are accepted

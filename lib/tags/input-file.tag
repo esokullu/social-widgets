@@ -85,6 +85,58 @@
                 },
                 server: {
                     url: window.GraphJSConfig.host,
+                    process: (fieldName, file, metadata, load, error, progress, abort, transfer, options) => {
+                        const formData = new FormData();
+                        const data = {};
+                        formData.append('files.media', file, file.name);
+                        data['public_id'] = window.GraphJSConfig.id;
+                        formData.append('data', JSON.stringify(data));
+                        const request = new XMLHttpRequest();
+                        const apiurl = '/v1/uploadFile';
+                        request.open('POST', apiurl);
+                        
+                        request.upload.onprogress = (e) => {
+                            progress(e.lengthComputable, e.loaded, e.total);
+                        };
+                        request.onload = function() {
+                            console.log(request.responseText);
+                            const _uploads = JSON.parse(request.responseText);
+                            console.log(_uploads);
+                            if (request.status >= 200 && request.status < 300) {
+                                // the load method accepts either a string (id) or an object
+                                //console.log('200');
+                                load(_uploads);
+                                console.log('200.1');
+                                const uploads = [{
+                                        url: _uploads.media.url,
+                                        filetype: _uploads.media.ext.substring(1),
+                                        original_filename: _uploads.media.name,
+                                        filesize: _uploads.media.size,
+                                        human_filesize: _uploads.media.size,
+                                        preview_url: ((this.type === 'document') ?  _uploads.media.url : _uploads.media.formats.thumbnail.url)
+                                }];
+                                console.log(uploads);
+                                opts.callbackSuccess && opts.callbackSuccess(uploads);
+                            } else {
+                                console.log('not 200');
+                                // Can call the error method if something is wrong, should exit after
+                                error('oh no');
+                                opts.callbackFail && opts.callbackFail(response);
+                            }
+                        }
+
+                        request.send(formData);
+
+                        return {
+                            abort: () => {
+                                // This function is entered if the user has tapped the cancel button
+                                request.abort();
+                                // Let FilePond know the request has been cancelled
+                                abort();
+                            },
+                        };
+                    }
+                    /*,
                     process: {
                         url:'/uploadFile?public_id=' + window.GraphJSConfig.id,
                         withCredentials: true,
@@ -101,6 +153,7 @@
                             opts.callbackFail && opts.callbackFail(response);
                         }
                     }
+                    */
                 }
             });
             this.uploader.on('addfilestart', () => {
